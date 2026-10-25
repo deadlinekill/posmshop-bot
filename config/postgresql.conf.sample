@@ -1,0 +1,22 @@
+# Изменённые параметры postgresql.conf (таблица 3 отчёта).
+# Остальные параметры оставлены по умолчанию.
+# Сервер: Ubuntu Server 22.04, 4 ядра, 8 ГБ ОЗУ, PostgreSQL 15.
+
+listen_addresses = 'localhost, 10.10.0.5'   # адреса приёма подключений
+max_connections = 50                        # приложения используют пулы соединений
+shared_buffers = 2GB                        # буферный кэш, четверть памяти
+work_mem = 16MB                             # память на сортировку в запросе
+
+password_encryption = scram-sha-256         # способ хранения паролей
+ssl = on                                    # шифрование соединений
+ssl_cert_file = '/etc/postgresql/ssl/server.crt'
+ssl_key_file = '/etc/postgresql/ssl/server.key'
+
+log_connections = on                        # журналирование подключений
+log_disconnections = on
+log_min_duration_statement = 500ms          # запросы дольше 0,5 с попадают в журнал
+log_statement = 'ddl'                       # все изменения структуры базы
+# log_statement = 'all' не используем: в журнал попали бы персональные данные
+
+shared_preload_libraries = 'pg_stat_statements'   # статистика запросов
+autovacuum = on
